@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Device Ready Example</title>
+
+    <script type="text/javascript" charset="utf-8" src="phonegap.js"></script>
+    <script type="text/javascript" charset="utf-8">
+
+    // Wait for device API libraries to load
+    //
+    function onLoad() {
+        document.addEventListener("deviceready", onDeviceReady, false);
+    }
+
+    // device APIs are available
+    //
+    function onDeviceReady() {
+        // Now safe to use device APIs
+		alert("Device is Ready")
+		<!--window.open("http://docs.phonegap.com/en/3.1.0/index.html");-->
+    }
+	
+	function launchIntent(){
+		var address = "Dataran Underground, Plaza Dataran Merdeka, No. 70, Jalan Raja, 50350 Kuala Lumpur";
+
+		window.plugins.webintent.startActivity({
+			action: window.plugins.webintent.ACTION_VIEW,
+			url: 'geo:0,0?q=' + address},
+			function() {},
+			function() {alert('Failed to open URL via Android Intent')}
+		);
+	}
+
+    </script>
+  </head>
+  <body onload="onLoad()">
+  <h1>WebIntent Sample</h1>
+  <p>
+	<button onclick="launchIntent()">WebIntent</button>
+  </p>
+  </body>
+</html>

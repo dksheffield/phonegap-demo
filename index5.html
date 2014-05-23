@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Back Button Example</title>
+
+    <script type="text/javascript" charset="utf-8" src="phonegap.js"></script>
+    <script type="text/javascript" charset="utf-8">
+
+    // Wait for device API libraries to load
+    //
+    function onLoad() {
+        document.addEventListener("deviceready", onDeviceReady, false);
+    }
+
+    // device APIs are available
+    //
+    function onDeviceReady() {
+        // Register the event listener
+        alert("Hope backbutton exits on this page");
+		document.addEventListener("backbutton", onBackKey, false);
+    }
+	
+	function onBackKey(){
+		document.removeEventListener("backbutton", onBackKey, false);
+		onBackKey();
+	}
+
+    </script>
+  </head>
+  <body onload="onLoad()">
+	<p>Testing Back Button</p>
+	<p>Testing Back Button</p>
+	<p>Testing Back Button</p>
+	<p>Testing Back Button</p>
+	<p><a href="index2.html">Next Page</a></p>
+	<br><br><br>
+	<a href="wtai://wp/mc;18881235467">1-888-123-4567</a><br><br><br>
+	<a href="wtai://wp/ap;18881235467">Add to addressbook: 1-888-123-4567</a><br><br><br>
+	<a href="tel:+1-800-275-2273">+1-800-275-2273</a>
+  </body>
+</html>

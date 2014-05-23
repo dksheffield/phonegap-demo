@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Device Properties Example</title>
+
+    <script type="text/javascript" charset="utf-8" src="phonegap.js"></script>
+	<script type="text/javascript" src="http://debug.build.phonegap.com/target/target-script-min.js#5b77968c-672c-11e3-b234-22000a98b3d6"></script>
+    <script type="text/javascript" charset="utf-8">
+
+    // Wait for device API libraries to load
+    //
+    document.addEventListener("deviceready", onDeviceReady, false);
+
+    // device APIs are available
+    //
+    function onDeviceReady() {
+		console.log("Geolocation Page");
+		var element = document.getElementById('deviceProperties');
+        element.innerHTML = 'Device Model: '    + device.model    + '<br />' +
+                            'Device Cordova: '  + device.cordova  + '<br />' +
+                            'Device Platform: ' + device.platform + '<br />' +
+                            'Device UUID: '     + device.uuid     + '<br />' +
+                            'Device Version: '  + device.version  + '<br />';
+        //navigator.geolocation.getCurrentPosition(onSuccess, onError);
+    }
+	
+	function myLocation(){
+		var options = { enableHighAccuracy: true, maximumAge: 2000, timeout: 8000 };
+		navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
+	}
+
+    // onSuccess Geolocation
+    //
+    function onSuccess(position) {
+        var element = document.getElementById('geolocation');
+        element.innerHTML = 'Last Latitude: '           + position.coords.latitude              + '<br />' +
+                            'Last Longitude: '          + position.coords.longitude             + '<br />' +
+                            'Altitude: '           + position.coords.altitude              + '<br />' +
+                            'Accuracy: '           + position.coords.accuracy              + '<br />' +
+                            'Altitude Accuracy: '  + position.coords.altitudeAccuracy      + '<br />' +
+                            'Heading: '            + position.coords.heading               + '<br />' +
+                            'Speed: '              + position.coords.speed                 + '<br />' +
+                            'Timestamp: '          + position.timestamp                    + '<br />';
+    }
+
+    // onError Callback receives a PositionError object
+    //
+    function onError(error) {
+        alert('code: '    + error.code    + '\n' +
+              'message: ' + error.message + '\n');
+		console.log('code: '    + error.code    + '\n' +
+              'message: ' + error.message + '\n');
+    }
+	
+	function watchMyPosition(){
+		var options = { enableHighAccuracy: false, maximumAge: 2000, timeout: 8000 };
+        watchID = navigator.geolocation.watchPosition(onSuccess, onError, options);
+	}
+
+    </script>
+  </head>
+  <body>
+    <p id="geolocation">Finding geolocation...</p>
+	<p id="deviceProperties">Loading device properties...</p>
+	<p><button onclick="myLocation();">Get Location</button></p>
+	<p><button onclick="watchMyPosition();">Watch Position</button></p>
+  </body>
+</html>

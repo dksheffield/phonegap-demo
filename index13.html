@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>getLocaleName Example</title>
+    <script type="text/javascript" charset="utf-8" src="phonegap.js"></script>
+    <script type="text/javascript" charset="utf-8">
+	
+	document.addEventListener("deviceready", onDeviceReady, false);
+	
+	function onDeviceReady(){
+		StatusBar.overlaysWebView(false);
+		alert(device.cordova);
+	}
+
+    function checkLocale() {
+      navigator.globalization.getLocaleName(
+        function (locale) {alert('locale: ' + locale.value + '\n');},
+        function () {alert('Error getting locale\n');}
+      );
+    }
+	
+	function openBrowser() {
+        var ref = window.open('https://github.com/phonegap/build/issues', '_system', 'location=no');
+        ref.addEventListener('loadstart', function(event) { alert('start: ' + event.url); });
+        ref.addEventListener('loadstop', function(event) { alert('stop: ' + event.url); });
+        ref.addEventListener('loaderror', function(event) { alert('error: ' + event.message); });
+        ref.addEventListener('exit', function(event) { alert(event.type); });
+    }
+	
+	function statusBarHide(){
+		StatusBar.hide();
+	}
+	
+	function statusBarShow(){
+		StatusBar.show();
+	}
+    </script>
+  </head>
+  <body>
+    <button onclick="checkLocale()">Click for locale</button><br>
+	<button onclick="openBrowser()">Open Index 1 Page</button><br>
+	<button onclick="statusBarHide()">Hide Status Bar</button><br>
+	<button onclick="statusBarShow()">Show Status Bar</button><br>
+  </body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>InAppBrowser.addEventListener Example</title>
+
+    <script type="text/javascript" charset="utf-8" src="phonegap.js"></script>
+    <script type="text/javascript" charset="utf-8">
+
+    // Wait for device API libraries to load
+    //
+    document.addEventListener("deviceready", onDeviceReady, false);
+
+    // device APIs are available
+    //
+    function onDeviceReady() {
+         /*var ref = window.open('http://www.antennahouse.com/XSLsample/pdf/sample-link_1.pdf', '_system', 'location=yes');
+         ref.addEventListener('loadstart', function(event) { alert('start: ' + event.url); });
+         ref.addEventListener('loadstop', function(event) { alert('stop: ' + event.url); });
+         ref.addEventListener('loaderror', function(event) { alert('error: ' + event.message); });
+         ref.addEventListener('exit', function(event) { alert(event.type); });*/
+		 alert('Device is Ready');
+		 alert(device.platform);
+    }
+	
+	function scanCode(){
+		cordova.plugins.barcodeScanner.scan(
+		  function (result) {
+			  alert("We got a barcode\n" +
+					"Result: " + result.text + "\n" +
+					"Format: " + result.format + "\n" +
+					"Cancelled: " + result.cancelled);
+		  }, 
+		  function (error) {
+			  alert("Scanning failed: " + error);
+		  }
+	   );
+	}
+	
+	function checkTwitter(){
+		if(device.platform==='iOS'){
+			appAvailability.check('twitter://', function(availability) {
+				// availability is either true or false
+				if(availability) { alert('Twitter is available'); }
+				else{
+					alert('Twitter is NOT available');
+					window.open('https://www.twitter.com/','_blank','location=yes');
+				}
+			});
+		}
+		else{
+			appAvailability.check('com.twitter.android', function(availability) {
+				// availability is either true or false
+				if(availability) { alert('Twitter is available'); }
+				else{
+					alert('Twitter is NOT available');
+					window.open('https://www.twitter.com/','_blank','location=yes');
+				}
+			});
+		}
+	}
+	
+	function checkFacebook(){
+		if(device.platform==='iOS'){
+			appAvailability.check('fb://', function(availability) {
+				// availability is either true or false
+				if(availability) { alert('Facebook is available'); }
+				else{
+					alert('Facebook is NOT available');
+					window.open('https://www.facebook.com/','_blank','location=yes');
+				}
+			});
+		}
+		else{
+			appAvailability.check('com.facebook.katana', function(availability) {
+				// availability is either true or false
+				if(availability) { alert('Facebook is available'); }
+				else{
+					alert('Facebook is NOT available');
+					window.open('https://www.facebook.com/','_blank','location=yes');
+				}
+			});
+		}
+	}
+    </script>
+  </head>
+  <body>
+	<button onclick='scanCode()'>Scan Code</button><br><br>
+	<button onclick='checkFacebook()'>Facebook</button><br><br>
+	<button onclick='checkTwitter()'>Twitter</button><br><br>
+  </body>
+</html>

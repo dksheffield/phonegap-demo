@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Capture Photo</title>
+
+    <script type="text/javascript" charset="utf-8" src="phonegap.js"></script>
+    <script type="text/javascript" charset="utf-8">
+
+    var pictureSource;   // picture source
+    var destinationType; // sets the format of returned value
+
+    // Wait for device API libraries to load
+    //
+	function onLoad(){
+		document.addEventListener("deviceready",onDeviceReady,false);
+	}
+    // device APIs are available
+    //
+    function onDeviceReady() {
+        pictureSource=navigator.camera.PictureSourceType;
+        destinationType=navigator.camera.DestinationType;
+		document.addEventListener("backbutton", onBackKeyDown, false);
+    }
+
+    // Called when a photo is successfully retrieved
+    //
+    function onPhotoDataSuccess(imageData) {
+      // Uncomment to view the base64-encoded image data
+      // console.log(imageData);
+
+      // Get image handle
+      //
+	  document.getElementById('testDiv').style.display='block';
+      var smallImage = document.getElementById('smallImage');
+
+      // Unhide image elements
+      //
+      smallImage.style.display = 'block';
+
+      // Show the captured photo
+      // The inline CSS rules are used to resize the image
+      //
+      smallImage.src = "data:image/jpeg;base64," + imageData;
+    }
+
+    // Called when a photo is successfully retrieved
+    //
+    function onPhotoURISuccess(imageURI) {
+		document.getElementById('testDiv').style.display='block';
+      var largeImage = document.getElementById('largeImage');
+      largeImage.style.display = 'block';
+      largeImage.src = imageURI;
+    }
+
+    // A button will call this function
+    //
+    function capturePhoto() {
+      // Take picture using device camera and retrieve image as base64-encoded string
+	  if(device.platform=='Android'){
+		  navigator.camera.getPicture(onPhotoDataSuccess, onFail, { quality: 100,
+			destinationType: destinationType.DATA_URL });
+		}
+    }
+
+    // A button will call this function
+    //
+    function capturePhotoEdit() {
+		if(device.platform=='Android'){
+		  // Take picture using device camera, allow edit, and retrieve image as base64-encoded string
+		  navigator.camera.getPicture(onPhotoDataSuccess, onFail, { quality: 100, allowEdit: true,
+			destinationType: destinationType.DATA_URL });
+		}
+    }
+
+    // A button will call this function
+    //
+    function getPhoto(source) {
+      // Retrieve image file location from specified source
+      navigator.camera.getPicture(onPhotoURISuccess, onFail, { quality: 50,
+        destinationType: destinationType.FILE_URI,
+        sourceType: source });
+    }
+
+    // Called if something bad happens.
+    //
+    function onFail(message) {
+      alert('Failed because: ' + message);
+    }
+	
+	function onBackKeyDown() {
+		navigator.notification.confirm(
+			'You are the winner!', // message
+			 onConfirm,            // callback to invoke with index of button pressed
+			'Game Over',           // title
+			['Restart','Exit']         // buttonLabels
+		);
+    }
+	
+	function onConfirm(buttonIndex) {
+        alert('You selected button ' + buttonIndex);
+		if(buttonIndex === 2){
+			navigator.app.exitApp();
+		}
+    }
+
+    </script>
+  </head>
+  <body onload="onLoad();">
+    <button onclick="capturePhoto();">Capture Photo</button> <br>
+    <button onclick="capturePhotoEdit();">Capture Editable Photo</button> <br>
+    <button onclick="getPhoto(pictureSource.PHOTOLIBRARY);">From Photo Library</button><br>
+    <button onclick="getPhoto(pictureSource.SAVEDPHOTOALBUM);">From Photo Album</button><br>
+	<div id="testDiv" style="display:none; background:#D8F781">
+		<img style="display:none;width:260px;height:260px;" id="smallImage" src="" />
+		<img style="display:none;" id="largeImage" src="" />
+	</div>
+  </body>
+</html>

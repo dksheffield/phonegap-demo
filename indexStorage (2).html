@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Storage Example</title>
+
+    <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+    <script type="text/javascript" charset="utf-8">
+
+    // Wait for device API libraries to load
+    //
+    document.addEventListener("deviceready", onDeviceReady, false);
+
+    // device APIs are available
+    //
+    function onDeviceReady() {
+		alert(window.localStorage.key(i));
+		alert(indow.localStorage.getItem("key"));
+		
+		window.localStorage.setItem("key", "value");
+        var keyname = window.localStorage.key(i);
+		alert(keyname);
+        // keyname is now equal to "key"
+        var value = window.localStorage.getItem("key");
+		alert(value);
+        // value is now equal to "value"
+        window.localStorage.removeItem("key");
+        window.localStorage.setItem("key2", "value2");
+        //window.localStorage.clear();
+        // localStorage is now empty
+    }
+	
+	function storelocal(){
+		window.localStorage.setItem("key", "value");
+        var keyname = window.localStorage.key(i);
+		alert(keyname);
+        // keyname is now equal to "key"
+        var value = window.localStorage.getItem("key");
+		alert(value);
+	}
+
+    </script>
+  </head>
+  <body>
+    <h1>Example</h1>
+    <p>localStorage</p>
+	<p><button onclick="storelocal();">Store Local</button></p>
+	<p><button onclick="window.open('indexGeolocation.html')">Geolocation Page</button></p>
+	<p><button onclick="window.open('indexCamera.html')">Camera Page</button></p>
+  </body>
+</html>

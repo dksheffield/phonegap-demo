@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <title>File Download Example</title>
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, target-densitydpi=device-dpi" />
+    <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+    <script type="text/javascript" src="SmsSendingPlugin.js"></script>
+    <script type="text/javascript" src="json2.js"></script>
+    <script type="text/javascript" charset="utf-8">
+
+        // Wait for Cordova to load
+        //
+        document.addEventListener("deviceready", onDeviceReady, false);
+        
+        var smsSendingPlugin = cordova.require('cordova/plugin/smssendingplugin');
+
+        // Cordova is ready
+        //
+        function onDeviceReady() {
+			alert("Device is ready. Press button to download file");
+        }
+        
+        function downloadFile(){
+        	var remoteFile = "http://www.servicerocket.com/wp-content/uploads/2013/03/SR_black-white_homepage4.jpg";
+	        var localFileName = remoteFile.substring(remoteFile.lastIndexOf('/')+1);
+	        
+	        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fileSystem) {
+	            fileSystem.root.getFile(localFileName, {create: true, exclusive: false}, function(fileEntry) {
+	                var localPath = fileEntry.fullPath;
+	                if (device.platform === "Android" && localPath.indexOf("file://") === 0) {
+	                    localPath = localPath.substring(7);
+	                }
+	                var ft = new FileTransfer();
+	                ft.download(remoteFile,
+	                    localPath, function(entry) {
+	                        var dwnldImg = document.getElementById("dwnldImg");
+	                        dwnldImg.src = entry.fullPath;
+	                        dwnldImg.style.visibility = "visible";
+	                        dwnldImg.style.display = "block";
+	                    }, fail);
+	            }, fail);
+	        }, fail);
+        }
+        
+        function sendMsg(){
+        	
+        	smsSendingPlugin.isSupported ((function(supported) {
+			    if(supported) 
+			      alert("SMS supported !");
+			    else
+			      alert("SMS not supported");
+			  }), function() {
+			    alert("Error while checking the SMS support");
+			  });
+			  smsSendingPlugin.send ("0149639162", "SMS Sening Plugin Test Works !", function() {
+			    alert("Message sent :-)");
+			  }, function() {
+			    alert("Message not sent :s");
+			  });
+        }
+        
+        function sendSMS(){
+        	sendSmsDemo = function() {
+                        cordova.exec(function(winParam) {
+                                // Use the following line if json2 library is present.
+                                // Available from Douglas Crockford's github page here:
+                                // https://github.com/douglascrockford/JSON-js/blob/master/json2.js
+                                console.log( JSON.stringify(winParam) );
+                                alert(winParam.sms_send);
+                            }
+                            , function(error) {
+                                alert("An error has occurred");
+                                console.log("An error has occurred");
+                                // Please refer to previous comment about json2 library.
+                                console.log( JSON.stringify(error) );
+                            }
+                            , "SendSms"
+                             ,"SendSms"
+                             , ["0149639162", "This is random text."]);
+                    }
+        }
+        
+        function fail(error) {
+	        console.log(error.code);
+	    }
+        </script>
+</head>
+<body>
+    <h1>Example</h1>
+    <p>Download File</p>
+    <button onclick="downloadFile()">Download File</button>
+    <button onclick="sendMsg()">Send Message</button>
+    <p><button onclick="sendSMS()">Send SMS</button></p>
+    <img src="" id="dwnldImg" style="display: none"/>
+</body>
+</html>
